@@ -1,7 +1,8 @@
 import User from "../models/user.model.js";
 import bcryptjs from 'bcryptjs';                                            // for passwords
+import { errorHandler } from "../utils/error.js";
 
-export const signup = async (req, res) => {                                   // async await function using model and save in DataBase
+export const signup = async (req, res, next) => {                                   // async await function using model and save in DataBase
   const { username, email, password } = req.body;  
   const hashedPassword = bcryptjs.hashSync(password, 10);                       // 
   const newUser = new User({ username, email, password: hashedPassword });
@@ -9,7 +10,7 @@ export const signup = async (req, res) => {                                   //
     await newUser.save();
     res.status(201).json("User created succesfully");                // success message
   } catch (error) {
-    res.status(500).json(error.message);                                    // use await in try catch to send err to user
+    next(error);       //(errorHandler(550, 'error from the custom function'));      well use await in try catch to send err to user app.use "next" in index.js
   }
  
 };
