@@ -9,7 +9,7 @@ export default function Contact({ listing }) {
   };
 
   useEffect(() => {
-    const fetchLandlord = async () => {
+    const fetchLandlord = async () => {                     // get landlord information
       try {
         const res = await fetch(`/api/user/${listing.userRef}`);
         const data = await res.json();
