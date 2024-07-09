@@ -5,6 +5,7 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from './routes/listing.route.js';
 import cookieParser from "cookie-parser";
+import path from 'path';
 
 dotenv.config(); // initialize it
 
@@ -17,6 +18,8 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -35,6 +38,12 @@ app.get("/test", (req, res) => {
 app.use("/api/user", userRouter); // create api route to call function test
 app.use("/api/auth", authRouter); // create api route
 app.use("/api/listing", listingRouter); // create api route
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 app.use((err, req, res, next) => {                                                    
   const statusCode = err.statusCode || 500;                          // middleware
